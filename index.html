@@ -58,7 +58,7 @@ h2{font-size:24px;color:var(--fg)}
 .group{margin-top:48px}.group:first-of-type{margin-top:32px}
 .group h3{font-size:20px}
 .group p{margin-top:4px;font-size:14px;color:var(--muted-fg)}
-.car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px -20px 0;padding:0 20px 12px;scrollbar-width:none}
+.car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px -20px 0;padding:0 20px 12px;scrollbar-width:none;overscroll-behavior-x:contain}
 .car::-webkit-scrollbar{display:none}
 .slide{flex:0 0 88vw;max-width:420px;scroll-snap-align:center;background:var(--card);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}
 .slide .ph{aspect-ratio:3/2}
@@ -413,7 +413,7 @@ function e(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;",
 
 var h="";G.forEach(function(g,gi){h+='<div class="group"><h3>'+g[0]+' '+e(g[1])+'</h3><p>'+e(g[2])+'</p><div class="car" id="c'+gi+'">';g[3].forEach(function(m){var n=String(m[0]).padStart(2,"0"),src='img/mapas/mapa-'+n+'.webp';h+='<div class="slide"><a href="img/mapas/full/mapa-'+n+'.webp" target="_blank" rel="noopener"><img class="mimg" data-ph="'+src+'" src="'+src+'" width="640" height="427" alt="Mapa visual: '+e(m[1])+'" loading="lazy" decoding="async"></a><p>'+e(m[1])+'</p></div>'});h+='</div><div class="arrows"><button type="button" data-c="c'+gi+'" data-d="-1" aria-label="Ver mapas anteriores">‹</button><button type="button" data-c="c'+gi+'" data-d="1" aria-label="Ver mais mapas">›</button></div></div>'});
 document.getElementById("groups").innerHTML=h;
-document.getElementById("groups").addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;var c=document.getElementById(b.dataset.c),s=c.firstElementChild;c.scrollBy({left:(s?s.offsetWidth+16:c.clientWidth*.88)*+b.dataset.d,behavior:"smooth"})});
+document.getElementById("groups").addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;var c=document.getElementById(b.dataset.c),s=c.firstElementChild,d=+b.dataset.d;if(!s)return;var max=c.scrollWidth-c.clientWidth,step=s.offsetWidth+16;if(d>0&&c.scrollLeft>=max-4){c.scrollTo({left:0,behavior:"smooth"});return}if(d<0&&c.scrollLeft<=4){c.scrollTo({left:max,behavior:"smooth"});return}c.scrollTo({left:Math.max(0,Math.min(max,c.scrollLeft+step*d)),behavior:"smooth"})});
 
 h="";K.forEach(function(k){h+='<div class="kcard"><h3>'+k[0]+' '+e(k[1])+'</h3><ul>';k[2].forEach(function(t){h+='<li>'+e(t)+'</li>'});if(k[3])h+='<li class="more">E muito mais</li>';h+='</ul></div>'});
 document.getElementById("kit").innerHTML=h;
